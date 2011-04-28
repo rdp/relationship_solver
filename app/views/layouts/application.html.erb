@@ -5,6 +5,46 @@
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
+  
+  
+  
+<style type="text/css">
+  div.slider { width:256px; margin:10px 0; background-color:#ccc; height:10px; position: relative; }
+  div.slider div.handle { width:10px; height:15px; background-color:#f00; cursor:move; position: absolute; }
+
+  div#zoom_element { width:50px; height:50px; background:#2d86bd; position:relative; }
+</style>
+  
+<script type="text/javascript">
+  (function() {
+    var zoom_slider = $('zoom_slider'),
+        rgb_slider = $('rgb_slider'),
+        box = $('zoom_element');
+
+    new Control.Slider(zoom_slider.down('.handle'), zoom_slider, {
+      range: $R(40, 160),
+      sliderValue: 50,
+      onSlide: function(value) {
+        box.setStyle({ width: value + 'px', height: value + 'px' });
+      },
+      onChange: function(value) { 
+        box.setStyle({ width: value + 'px', height: value + 'px' });
+      }
+    });
+
+    new Control.Slider(rgb_slider.select('.handle'), rgb_slider, {
+      range: $R(0, 255),
+      sliderValue: [45, 134, 189],
+      onSlide: function(values) {
+        box.setStyle({ backgroundColor: "rgb("+ values.map(Math.round).join(',') +")" });
+      },
+      onChange: function(values) { 
+        box.setStyle({ backgroundColor: "rgb("+ values.map(Math.round).join(',') +")" });
+      }
+    });
+  })();
+</script>
+  
 </head>
 <body>
 
