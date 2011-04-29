@@ -54,5 +54,16 @@ RelationshipController::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  match ':controller(/:action(/:id(.:format)))'
+  my_draw = Proc.new do
+    match ':controller(/:action(/:id(.:format)))'
+  end
+
+  if RAILS_ENV=='production'
+    Rails.logger.info 'production'
+    scope '/relationship_solver' do
+      my_draw.call
+    end
+  else
+    my_draw.call
+  end
 end
